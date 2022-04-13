@@ -1,6 +1,7 @@
 package br.com.raniel;
 
 import br.com.raniel.dao.DespesaDAO;
+import br.com.raniel.model.Categoria;
 import br.com.raniel.model.Despesa;
 
 import java.util.List;
@@ -31,6 +32,17 @@ public class Application {
             System.out.println("Categoria: " + despesa.getCategoria());
         });
 
+        List<Despesa> despesasByTransport = dao.findByCategoria(Categoria.TRANSPORTE);
+
+        System.out.println("\nPegando só a categoria de transporte");
+        for (Despesa despesa : despesasByTransport) {
+            System.out.println("Id: " + despesa.getId());
+            System.out.println("Descrição: " + despesa.getDescricao());
+            System.out.println("Valor: " + despesa.getValor());
+            System.out.println("Data: " + despesa.getData());
+            System.out.println("Categoria: " + despesa.getCategoria());
+            System.out.println();
+        }
 
     }
 }
