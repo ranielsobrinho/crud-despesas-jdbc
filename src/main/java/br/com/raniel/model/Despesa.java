@@ -14,6 +14,14 @@ public class Despesa {
         this.id = id;
     }
 
+    public Despesa(Long id, String descricao, LocalDate data, double valor, Categoria categoria) {
+        this.id = id;
+        this.descricao = descricao;
+        this.data = data;
+        this.valor = valor;
+        this.categoria = categoria;
+    }
+
     public String getDescricao() {
         return descricao;
     }
