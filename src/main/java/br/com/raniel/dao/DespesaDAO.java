@@ -28,8 +28,8 @@ public class DespesaDAO implements IDespesaDAO {
 
             Long generatedId = resultSet.getLong("id");
             despesa.setId(generatedId);
-        }catch (SQLException ex){
-            throw new RuntimeException(ex);
+        }catch (SQLException e){
+            throw new RuntimeException(e);
         }
         return despesa;
     }
@@ -46,15 +46,25 @@ public class DespesaDAO implements IDespesaDAO {
             preparedStatement.setLong(5, despesa.getId());
 
             preparedStatement.executeUpdate();
-        }catch (SQLException ex){
-            throw new RuntimeException(ex);
+        }catch (SQLException e){
+            throw new RuntimeException(e);
         }
         return despesa;
     }
 
     @Override
     public void delete(Long id) {
+        try(Connection connection = ConnectionFactory.getConnection()) {
+            String sql = "DELETE FROM despesas WHERE id = ?;";
 
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, id);
+
+            preparedStatement.executeUpdate();
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
