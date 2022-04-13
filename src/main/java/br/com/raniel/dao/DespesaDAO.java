@@ -64,7 +64,7 @@ public class DespesaDAO implements IDespesaDAO {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        };
+        }
         return despesas;
     }
 
@@ -88,12 +88,33 @@ public class DespesaDAO implements IDespesaDAO {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        };
+        }
         return Optional.ofNullable(despesa);
     }
 
     @Override
     public List<Despesa> findByCategoria(Categoria categoria) {
-        return null;
+        String sql = "SELECT id, descricao, data, valor, categoria FROM despesas WHERE categoria = ?";
+        List<Despesa> despesas = new ArrayList<>();
+
+        try (Connection connection = ConnectionFactory.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, categoria.toString());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                Long id =resultSet.getLong("id");
+                String descricao = resultSet.getString("descricao");
+                LocalDate data = resultSet.getDate("data").toLocalDate();
+                double valor = resultSet.getDouble("valor");
+                Categoria cat = Categoria.valueOf(resultSet.getString("categoria"));
+                Despesa despesa = new Despesa(id, descricao, data,valor, cat);
+                despesas.add(despesa);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return despesas;
     }
 }
