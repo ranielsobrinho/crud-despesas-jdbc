@@ -82,7 +82,8 @@ public class DespesaDAO implements IDespesaDAO {
                 LocalDate data = resultSet.getDate("data").toLocalDate();
                 double valor = resultSet.getDouble("valor");
                 Categoria categoria = Categoria.valueOf(resultSet.getString("categoria"));
-                Despesa despesa = new Despesa(id, descricao, data,valor, categoria);
+                Despesa despesa = new Despesa(descricao, data,valor, categoria);
+                despesa.setId(id);
                 despesas.add(despesa);
             }
         } catch (SQLException e) {
@@ -106,7 +107,8 @@ public class DespesaDAO implements IDespesaDAO {
                 LocalDate data = resultSet.getDate("data").toLocalDate();
                 double valor = resultSet.getDouble("valor");
                 Categoria categoria = Categoria.valueOf(resultSet.getString("categoria"));
-                despesa = new Despesa(pKey, descricao, data,valor, categoria);
+                despesa = new Despesa(descricao, data,valor, categoria);
+                despesa.setId(pKey);
 
             }
         } catch (SQLException e) {
@@ -132,7 +134,8 @@ public class DespesaDAO implements IDespesaDAO {
                 LocalDate data = resultSet.getDate("data").toLocalDate();
                 double valor = resultSet.getDouble("valor");
                 Categoria cat = Categoria.valueOf(resultSet.getString("categoria"));
-                Despesa despesa = new Despesa(id, descricao, data,valor, cat);
+                Despesa despesa = new Despesa(descricao, data,valor, cat);
+                despesa.setId(id);
                 despesas.add(despesa);
             }
         } catch (SQLException e) {

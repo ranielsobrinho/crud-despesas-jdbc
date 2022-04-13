@@ -14,8 +14,7 @@ public class Despesa {
         this.id = id;
     }
 
-    public Despesa(Long id, String descricao, LocalDate data, double valor, Categoria categoria) {
-        this.id = id;
+    public Despesa(String descricao, LocalDate data, double valor, Categoria categoria) {
         this.descricao = descricao;
         this.data = data;
         this.valor = valor;
