@@ -1,15 +1,34 @@
 package br.com.raniel.dao;
 
+import br.com.raniel.infra.ConnectionFactory;
 import br.com.raniel.model.Categoria;
 import br.com.raniel.model.Despesa;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+
+import static br.com.raniel.infra.ConnectionFactory.*;
 
 public class DespesaDAO implements IDespesaDAO {
     @Override
     public Despesa save(Despesa despesa) {
-        return null;
+        try (Connection connection = ConnectionFactory.getConnection()) {
+            String sql = "INSERT INTO despesas (descricao, data. valor, categoria) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, despesa.getDescricao());
+            preparedStatement.setDate(2, java.sql.Date.valueOf(despesa.getData()));
+            preparedStatement.setDouble(3, despesa.getValor());
+            preparedStatement.setString(4, despesa.getCategoria().toString());
+
+            preparedStatement.executeUpdate();
+
+        }catch (SQLException ex){
+            throw new RuntimeException(ex);
+        }
+        return despesa;
     }
 
     @Override
