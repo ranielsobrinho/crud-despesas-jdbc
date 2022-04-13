@@ -5,10 +5,10 @@ import br.com.raniel.model.Categoria;
 import br.com.raniel.model.Despesa;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static br.com.raniel.infra.ConnectionFactory.*;
 
 public class DespesaDAO implements IDespesaDAO {
     @Override
@@ -46,12 +46,50 @@ public class DespesaDAO implements IDespesaDAO {
 
     @Override
     public List<Despesa> findAll() {
-        return null;
+        String sql = "SELECT id, descricao, data, valor, categoria FROM despesas";
+        List<Despesa> despesas = new ArrayList<>();
+
+        try (Connection connection = ConnectionFactory.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                Long id =resultSet.getLong("id");
+                String descricao = resultSet.getString("descricao");
+                LocalDate data = resultSet.getDate("data").toLocalDate();
+                double valor = resultSet.getDouble("valor");
+                Categoria categoria = Categoria.valueOf(resultSet.getString("categoria"));
+                Despesa despesa = new Despesa(id, descricao, data,valor, categoria);
+                despesas.add(despesa);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        };
+        return despesas;
     }
 
     @Override
     public Optional<Despesa> findById(Long id) {
-        return Optional.empty();
+        String sql = "SELECT id, descricao, data, valor, categoria FROM despesas WHERE id = ?";
+        Despesa despesa = null;
+        try (Connection connection = ConnectionFactory.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                Long pKey =resultSet.getLong("id");
+                String descricao = resultSet.getString("descricao");
+                LocalDate data = resultSet.getDate("data").toLocalDate();
+                double valor = resultSet.getDouble("valor");
+                Categoria categoria = Categoria.valueOf(resultSet.getString("categoria"));
+                despesa = new Despesa(pKey, descricao, data,valor, categoria);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        };
+        return Optional.ofNullable(despesa);
     }
 
     @Override
