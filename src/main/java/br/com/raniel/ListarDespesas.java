@@ -7,7 +7,7 @@ import br.com.raniel.model.Despesa;
 import java.util.List;
 import java.util.Optional;
 
-public class Application {
+public class ListarDespesas {
     public static void main(String[] args) {
         DespesaDAO dao = new DespesaDAO();
 
